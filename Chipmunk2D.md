@@ -2,7 +2,7 @@
 
 > Chipmunk2D中文手册，由泰然翻译组翻译。转载请注明出处。
 
-> 翻译：[ChildhoodAndy](http://childhood.logdown.com)（完成了大部分的翻译）， [u0u0](http://weibo.com/lkncastle)， [gloryming](http://weibo.com/gloryming)。
+> 翻译：[ChildhoodAndy](http://dabing1022.github.io)，[u0u0](http://weibo.com/lkncastle)， [gloryming](http://weibo.com/gloryming)。
 
 > 校对：[涵紫](http://weibo.com/u/3503103601)
 
@@ -13,32 +13,127 @@
 
 # Chipmunk2D中文手册
 
------------------------------------------------------------------
+-----------------------------------------------------
+## 目录
+-  [1. Chipmunk2D 7.0.0](#1-Chipmunk2D 7.0.0)
+	-  [1.1 为什么用 C 库](#1-Why a C Library?)
+	-  [1.2 C API的局限](#1-Limitations of a C API)
+	-  [1.3 下载与编译](#1-Get it, Compile it)
+	-  [1.4 Hello Chipmunk（World）](#1-Hello Chipmunk)
+	-  [1.5 支持](#1-Support)
+	-  [1.6 联系](#1-Contact)
+	-  [1.7 开源协议](#1-License)
+	-  [1.8 链接](#1-Links)
+-  [2. Chipmunk2D 基础](#2-Chipmunk2D Basics)
+	-  [2.1 概述](#2-Overview)
+	-  [2.2 内存管理](#2-Memory Management the Chipmunk way)
+	-  [2.3 基本类型](#2-Basic Types)
+	-  [2.4 数学运算](#2-Math the Chipmunk way)
+-  [3. Chipmunk矢量：cpVect](#3-Chipmunk Vectors: cpVect)
+	-  [3.1 结构体定义、常量和构造函数](#3-Struct Definition, Constants and Constructors)
+	-  [3.2 操作运算](#3-Operations)
+-  [4. Chipmunk轴对齐包围盒：cpBB](#4-Chipmunk Axis Aligned Bounding Boxes: cpBB)
+	-  [4.1 结构体定义和构造函数](#4-Struct Definition and Constructors)
+	-  [4.2 操作运算](#4-Operations)
+-  [5. Chipmunk刚体：cpBody](#5-Chipmunk Rigid Bodies: cpBody)
+	-  [5.1 动态，运动和静态刚体](#5-Dynamic, Kinematic, and Static Bodies)
+	-  [5.2 Movement, Teleportation, and Velocity](#5-Movement, Teleportation, and Velocity)
+	-  [5.3 内存管理函数](#5-Memory Management Functions)
+	-  [5.4 创建动态刚体](#5-Creating Dynamic Bodies)
+	-  [5.5 属性](#Properties)
+	-  [5.6 转动惯量和面积帮助函数](#5-Moment of Inertia and Area Helper Functions)
+	-  [5.7 坐标系转换函数](#5-Coordinate Conversion Functions)
+	-  [5.8 速度转换函数](#5-Velocity Conversion Functions)
+	-  [5.9 施加力和力矩](#5-Applying Forces and Torques)
+	-  [5.10 休眠函数](#5-Sleeping Functions)
+	-  [5.11 迭代器](#5-Iterators)
+	-  [5.12 嵌入回调](#5-Integration Callbacks)
+-  [6. Chipmunk碰撞形状：cpShape](#6-Chipmunk Collision Shapes: cpShape)
+	-  [6.1 属性](#6-Properties)
+	-  [6.2 使用 cpShapeFilter 进行快速碰撞过滤](#6-Fast Collision Filtering using cpShapeFilter)
+	-  [6.3 内存管理函数](#6-Memory Management Functions)
+	-  [6.4 其他函数](#6-Misc Functions)
+	-  [6.5 圆形形状](#6-Working With Circle Shapes)
+	-  [6.6 线段形状](#6-Working With Segment Shapes)
+	-  [6.7 多边形形状](#6-Working With Polygon Shapes)
+	-  [6.8 修改cpShapes](#6-Modifying cpShapes)
+	-  [6.9 札记](#6-Notes)
+-  [7. Chipmunk空间：cpSpace](#7-Chipmunk Spaces: cpSpace)
+	-  [7.1 什么是迭代？为什么我要关心？](#7-What Are Iterations, and Why Should I Care?)
+	-  [7.2 休眠](#7-Sleeping)
+	-  [7.3 属性](#7-Properties)
+	-  [7.4 内存管理函数](#7-Memory Management Functions)
+	-  [7.5 操作运算](#7-Operations)
+	-  [7.6 空间索引](#7-Spatial Indexing)
+	-  [7.7 迭代器](#7-Iterators)
+	-  [7.8 空间模拟](#7-Simulating the Space)
+	-  [7.9 启用和调优空间哈希（散列）](#7-Enabling and Tuning the Spatial Hash)
+	-  [7.10 札记](#7-Notes)
+-  [8. Chipmunk约束：cpConstraint](#8-Chipmunk Constraints: cpConstraint)
+	-  [8.1 约束是什么，不是什么](#8-What constraints are and what they are not)
+	-  [8.2 属性](#8-Properties)
+	-  [8.3 反馈纠错](#8-Error correction by Feedback)
+	-  [8.4 约束和碰撞形状](#8-Constraints and Collision Shapes)
+	-  [8.5 现有关节类型视频演示](#8-Video Tour of Current Joint Types. (Requires connection to YouTube))
+	-  [8.6 共享内存管理函数](#8-Shared Memory Management Functions)
+-  [9. 约束类型](#9-Constraint Types)
+	-  [9.1 销关节](#9-Pin Joints)
+	-  [9.2 滑动关节](#9-Slide Joints)
+	-  [9.3 枢轴关节](#9-Pivot Joints)
+	-  [9.4 沟槽关节](#9-Groove Joint)
+	-  [9.5 阻尼弹簧](#9-Damped Spring)
+	-  [9.6 阻尼旋转弹簧](#9-Damped Rotary Spring)
+	-  [9.7 旋转限位关节](#9-Rotary Limit Joint)
+	-  [9.8 棘轮关节](#9-Ratchet Joint)
+	-  [9.9 齿轮关节](#9-Gear Joint)
+	-  [9.10 简单马达](#9-Simple Motor)
+	-  [9.11 札记](#9-Notes)
+-  [10. Chipmunk碰撞检测概述](#10-Overview of Collision Detection in Chipmunk)
+	-  [10.1 空间索引](#10-Spatial Indexing)
+	-  [10.2 快速碰撞过滤](#10-Fast Collision Filtering)
+	-  [10.3 基于约束的碰撞过滤](#10-Constraint Based Filtering)
+	-  [10.4 基本形状与形状间的碰撞检测](#10-Primitive Shape to Shape Collision Detection)
+	-  [10.5 碰撞处理函数过滤](#10-Collision Handler Filtering)
+-  [11. 碰撞回调](#11-Collision Callbacks)
+	-  [11.1 碰撞处理](#11-Collision Handlers)
+	-  [11.2 碰撞处理API](#11-Collision Handler API)
+	-  [11.3 后步回调](#11-Post-Step Callbacks)
+	-  [11.4 例子](#11-Examples)
+-  [12. Chipmunk碰撞对：cpArbiter](#12-Chipmunk Collision Pairs: cpArbiter)
+	-  [12.1 内存管理](#12-Memory Management)
+	-  [12.2 属性](#12-Properties)
+	-  [12.3 触点集](#12-Contact Point Sets)
+	-  [12.4 帮助函数 ](#12-Helper Functions)
+-  [13. 查询](#13-Queries)
+	-  [13.1 最近点查询](#13-Nearest Point Queries)
+	-  [13.2 线段查询](#13-Segment Queries)
+	-  [13.3 AABB查询](#13-AABB Queries)
+	-  [13.4 形状查询](#13-Shape Queries)
+	-  [13.5 闭包](#13-Blocks)
+	-  [13.6 例子](#13-Examples)
 
-# 1. Chipmunk2D 6.2.1
+<a name="1-Chipmunk2D 7.0.0"></a>
+# 1. Chipmunk2D 7.0.0
 Chipmunk2D是一个基于MIT协议的2D刚体物理仿真库。设计宗旨:极快、可移植、稳定、易用。出于这个原因，它已经被用于数以百计的游戏，而且几乎横跨了所有系统。这些游戏包括了iPhoneAppStore上一些顶级出色的TOP1游戏，如*Night Sky*等。这几年来，我投入了大量的时间来发展Chipmunk，才使得Chipmunk走到今天。如果您发现Chipmunk2D为您节省了许多时间，不妨考虑[捐赠](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6666552)下。这么做会使一个独立游戏制作者非常开心！
 
 首先，我要非常感谢ErinCatto（译者注：Box2D作者）, 早在2006年的时候，Chipmunk的冲量求解器便是受到他的范例代码的启发而完成（现在已经发展成一个成熟的物理引擎：Box2D.org)。他持久接触的想法允许对象的稳定堆栈只进行极少的求解器迭代，而我以前的求解器为了让模拟稳定模拟会产生大量的对象或者会消耗大量的CPU资源。
 
-## 1.1 为什么是一个C库
+<a name="1-Why a C Library?"></a>
+## 1.1 为什么用 C 库
 
 很多人问我为什么用C来写Chipmunk2D，而不是一个我喜欢的其他语言。我通常会对不同的编程语言很兴奋，几个月来，挑选的语言有Scheme, OCaml, Ruby, Objective-C, ooc, Lua, Io等等。它们都有一个共同点，那就是都很容易绑定到C代码。同时我也希望Chipmunk2D高效、易移植、优化简单并且容易调试，而使用C语言就能很简单的达到这些目标。
 
 我从来没有，将来也不太可能去用C来写一个完整的游戏。这里有很多比C有趣的语言，它们有垃圾回收，闭包，面向对象运行时等高级特性。如果你在其它语言中使用Chipmunk2D，可以在[Bindings and Ports](http://chipmunk2d.net/bindingsAndPorts.php)中找到有用的信息。因为Chipmunk2D基于C99的字集编写，使得它很容易集成到C、C++、Object-C等其它开发语言中。
 
+<a name="1-Limitations of a C API"></a>
 ## 1.2 C API的局限
 
 如果您使用的是C++，Chipmunk提供了操作符*，+和 - （一元和二元）的重载，但如果使用的是C，那么需要退回使用cpvadd() 和 cpvsub()。这有一点点不利于代码阅读，不过当你习惯之后这将不是个问题。大部分的向量操作可能并没任何形式的符号对应（至少不在键盘上）。
 
 C API的另一个问题是访问限制。Chipmunk有许多结构体，字段，函数只能内部使用。要解决这个问题，我把Chipmunk的全部私有API分离到头文件chipmunk_private.h中，同时在共有结构中使用CP_PRIVATE()来改名。你可以通过包含这个头文件或使用这个宏来自由访问私有API，但请注意这些私有API可能在未来版本中改变或消失，并且不会在文档中体现，同时也没有私有API的文档计划。
 
-## 1.3 Chipmunk2D Pro
-
-我们同时在出售Chipmunk2D的扩展版本： Chipmunk2D Pro。主要的特性有：ARM和NEON指令优化，多线程优化，一个为iOS/Mac开发提供的Objective-C封装层，以及自动几何工具。优化主要集中在提高移动性能，同时多线程特性能在支持pthread的平台运行。Objective-C封装层能让你无缝整合到Cocos2D或UIKit等框架，并能获得本地内存管理的优势（包括ARC）。同时Pro版本有大量优秀的API扩展。自动几何工具让你能从图像数据或程序生成并使用几何。
-
-另外，出售Chipmunk2D Pro让我们得以生存，并保持Chipmunk2D的开源。捐献也很棒，但是购买Pro版本你将获得捐献之外的某些东西。
-
-## 1.4 下载与编译
+<a name="1-Get it, Compile it"></a>
+## 1.3 下载与编译
 
 如果你还没有下载，你总可以在[这里](http://chipmunk-physics.net/release/ChipmunkLatest.tgz)获取到Chipmunk2D的最新版本。里面包含了[CMake](http://www.cmake.org/)的命令行编译脚本, Xcode工程以及Visual Studio ’09 和 ’10工程。
 
@@ -56,22 +151,23 @@ Debug模式可能略慢，但是包含了大量的错误检测断言，可以帮
 
 ### 命令行
 
-CMake编译脚本能在任何你安装了CMake的系统上运行。它甚至能生成XCode或MSVC工程（查看CMake文档获取更多信息）。
+CMake 编译脚本能在任何你安装了 CMake 的系统上运行。它甚至能生成 XCode 或 MSVC 工程（查看 CMake 文档获取更多信息）。
 
-下面的命令编译一个Debug的Chipmunk：
+下面的命令编译一个 Debug 的 Chipmunk：
 
 ```
 cmake -D CMAKE_BUILD_TYPE=Debug .
 make
 ```
 
-如何没有`-D CMAKE_BUILD_TYPE=Debug`参数，将生成一个release版本。
+如何没有`-D CMAKE_BUILD_TYPE=Debug`参数，将生成一个 release 版本。
 
-为什么使用CMake？一个非常好心的人完成了这个脚本的最初版本，然后我发现CMake能非常方便的解决跨平台编译问题。我知道有些人非常讨厌安装一些胡乱的non-make编译系统来编译某些东西，但是CMake确实节省了我大量的时间和精力。
+为什么使用 CMake？一个非常好心的人完成了这个脚本的最初版本，然后我发现 CMake 能非常方便的解决跨平台编译问题。我知道有些人非常讨厌安装一些胡乱的 non-make 编译系统来编译某些东西，但是 CMake 确实节省了我大量的时间和精力。
 
-## 1.5 Hello Chipmunk（World）
+<a name="1-Hello Chipmunk"></a>
+## 1.4 Hello Chipmunk（World）
 
-下面的Hello World示例项目中，创建一个模拟世界，模拟一个球掉落到一个静态线段上然后滚动出去，并打印球的坐标。
+下面的 Hello World 示例项目中，创建一个模拟世界，模拟一个球掉落到一个静态线段上然后滚动出去，并打印球的坐标。
 
 ```
 #include <stdio.h>
@@ -137,16 +233,18 @@ int main(void){
   
   return 0;  
 ```
-
-## 1.6 支持
+<a name="1-Support"></a>
+## 1.5 支持
 
 获得支持最好的方式就是访问[Chipmunk论坛](http://www.slembcke.net/forums/viewforum.php?f=1)。上面有许多人使用Chipmunk，应用在我知道的各个平台上。如果你在做一个商业项目，Howling Moon Software（我的公司）可[给与支持](http://howlingmoonsoftware.com/contracting.php)。我们可以帮助你实现自定义Chipmunk行为，以及bug修复和性能优化。
 
-## 1.7 联系
+<a name="1-Contact"></a>
+## 1.6 联系
 
 如果你发现Chipmunk中的任何bug，错误或者该文档中坏掉的链接，又或者对于Chipmunk有任何疑问、评论，都可以通过 slembcke@gmail.com (email或者GTalk)联系我。
 
-## 1.8 开源协议
+<a name="1-License"></a>
+## 1.7 开源协议
 
 Chipmunk基于MIT协议。
 
@@ -173,14 +271,17 @@ SOFTWARE.
 ```
 这项协议意味着对于商业项目你不必购买许可证或者支付任何费用就能使用Chipmunk。（虽然我们真的很感谢捐赠）
 
-## 1.9 链接
+<a name="1-Links"></a>
+## 1.8 链接
 
 -  [Chipmunk论坛](http://chipmunk2d.net/forum) - Chipmunk2D官方论坛
 -  [Howling Moon Software](http://howlingmoonsoftware.com/) - 我合办的软件公司（我们提供外包工作）
--  [Chipmunk2D Pro](http://chipmunk2d.net/chipmunkPro.php) - Chipmunk的增强版本，我们为ARM或者多核平台做了一些特定的优化，如从图像或程序数据中进行自动几何操作，以及为Objective-C做了API封装。
 -  [游戏](http://chipmunk2d.net/games.php) - 使用Chipmunk做的游戏清单。至少一小部分我们知道。
 
+<a name="2-Chipmunk2D Basics"></a>
 # 2. Chipmunk2D 基础
+
+<a name="2-Overview"></a>
 ## 2.1 概述
 
 在Chipmunk中有4种基本对象类型，分别是
@@ -192,57 +293,63 @@ SOFTWARE.
 
 人们经常对Chipmunk中的刚体和碰撞形状以及两者与精灵之间的关系产生混淆。精灵是对象的可视化表现，而碰撞形状是定义对象应该如何碰撞的不可见的属性。精灵和碰撞形状两者的位置和角度都是由刚体的运动控制的。通常你应该创建一个游戏对象类型，把这些东西捆绑在一起。
 
+<a name="2-Memory Management the Chipmunk way"></a>
 ## 2.2 内存管理
 
 对于你将使用的大多数结构体来说，Chipmunk采用了一套或多或少的标准和简单直接的内存管理方式。拿`cpSpace`结构体来举例：
 
--  cpSpaceNew()  - 分配并初始化一个`cpSpace`结构体。它先后调用了`cpSpaceAlloc()`和`cpSpaceInit(cpSpace *space)`
--  cpSpaceFree(cpSpace *space) - 销毁并释放`cpSpace`结构体
+-  `cpSpaceNew()`  - 分配并初始化一个`cpSpace`结构体。它先后调用了`cpSpaceAlloc()`和`cpSpaceInit(cpSpace *space)`
+-  `cpSpaceFree(cpSpace *space)` - 销毁并释放`cpSpace`结构体
 
-你有责任释放掉任何你分配了内存空间的结构体。 Chipmunk没有采用引用计数和垃圾回收机制。 如果你调用了一个`new`函数，则必须匹配调用`free`函数来释放空间，否则会引起内存泄漏。
+你有责任释放掉任何你分配了内存空间的结构体。 Chipmunk 没有采用引用计数和垃圾回收机制。 如果你调用了一个`new`函数，则必须匹配调用`free`函数来释放空间，否则会引起内存泄漏。
 
 另外当你在栈上分配临时结构体，或者写一个语言绑定，又或者在一个内存受限的环境下编码的时候，如果你在内存的分配和初始化上需要更多的控制权，可以使用下面的函数。*大部分人永远都不会使用这些函数。*
 
--  cpSpaceAlloc() - 为一个`cpSpace`结构体分配空间，但不进行初始化。所有的分配空间的函数看起来大致就像这样:`return (cpSpace *)cpcalloc(1, sizeof(cpSpace));`。 如果需要的话你可以自己实现自己的分配空间函数。把内存空间重置为0，不是硬性要求。
--  cpSpaceInit(cpSpace *space) - 初始化`cpSpace`结构体
--  cpSpaceDestroy(cpSpace *space) - 释放由`cpSpaceInit()`申请的所有内存空间，但并不释放`cpSpace`结构体本身
+-  `cpSpaceAlloc()` - 为一个`cpSpace`结构体分配空间，但不进行初始化。所有的分配空间的函数看起来大致就像这样:`return (cpSpace *)cpcalloc(1, sizeof(cpSpace));`。 如果需要的话你可以自己实现自己的分配空间函数。把内存空间重置为0，不是硬性要求。
+-  `cpSpaceInit(cpSpace *space)` - 初始化`cpSpace`结构体
+-  `cpSpaceDestroy(cpSpace *space)` - 释放由`cpSpaceInit()`申请的所有内存空间，但并不释放`cpSpace`结构体本身
 
 就像`new`和`free`函数的对应调用一样，任何由`alloc`函数分配的内存都要由`cpfree()`或类似的函数来释放，任何`init`函数调用都必须对应`destroy`函数调用。
 
-为了能够更加轻松地集成垃圾回收或其他内存管理机制，Chipmunk有若干可以被重写的编译时定义(cpcalloc(), cprealloc(), cpfree())。如果你不是通过带有垃圾回收的语言使用Chipmunk，我强烈推荐使用libGC。它为基于C的语言提供了一个几乎透明的垃圾收集器。
+为了能够更加轻松地集成垃圾回收或其他内存管理机制，Chipmunk有若干可以被重写的编译时定义(`cpcalloc()`, `cprealloc()`, `cpfree()`)。如果你不是通过带有垃圾回收的语言使用Chipmunk，我强烈推荐使用libGC。它为基于C的语言提供了一个几乎透明的垃圾收集器。
 
+<a name="2-Basic Types"></a>
 ## 2.3 基本类型
 
 `chipmunk_types.h`定义了Chipmunk使用的一些基本数据类型。这些数据类型可以在编译时改变以便适应你的需求：
 
--  cpFloat: 浮点型，默认为double
--  cpVect: 2D矢量，[cpVect相关文档](cpVect documentation)
--  cpBool: 像每一个优秀的C语言库一样，具有跨语言兼容性，你可以定义自己的布尔类型，默认为int
--  cpDataPointer: 指针类型，可以是回调、用户自定义数据的指针，默认是void*
--  cpCollistionType: 碰撞形状类型的唯一标识符，默认是unsigned int。自定义类型必须支持`==`运算符
--  cpGroup: 碰撞组唯一标识符，默认是unsigned int。当你不想区分组别的时候，可以定义一个`CP_NO_GROUP`。自定义类型必须支持`==`运算符
--  cpLayers: 该类型被用作为层的掩码，默认是unsigned int。`CP_ALL_LAYERS`被用来定义为所有层位。自定义类型必须支持位操作`&`运算符
+-  `cpFloat`: 浮点型，默认为double
+-  `cpVect`: 2D矢量，[cpVect相关文档](#3-Chipmunk Vectors: cpVect)
+-  `cpBool`: 像每一个优秀的C语言库一样，具有跨语言兼容性，你可以定义自己的布尔类型，默认为int
+-  `cpDataPointer`: 指针类型，可以是回调、用户自定义数据的指针，默认是 void*
+-  `cpCollistionType`: 碰撞形状类型的唯一标识符，默认是 unsigned int。自定义类型必须支持`==`运算符
+-  `cpGroup`: 碰撞组唯一标识符，默认是unsigned int。当你不想区分组别的时候，可以定义一个`CP_NO_GROUP`。自定义类型必须支持`==`运算符
+- `cpBitmask`: 用来碰撞过滤类别和掩码。默认是 unsigned int。自定义类型必须支持位运算操作符&。
+- `cpTransform`: 用来计算2×3仿射变换。
 
-如果你正在写游戏引擎或者在Chipmunk之上进行语言绑定，你可能希望使用对象的引用代替整数来表示碰撞类型和碰撞组。我经常使用类指针来表示碰撞类型，游戏对象指针来表示碰撞组。这比到处定义枚举表简单多了。
+如果你正在写游戏引擎或者在 Chipmunk 之上进行语言绑定，你可能希望使用对象的引用代替整数来表示碰撞类型和碰撞组。我经常使用类指针来表示碰撞类型，游戏对象指针来表示碰撞组。这比到处定义枚举表简单多了。
 
-注意：在iphone上，为了性能和兼容性，cpFloat被定义为float，cpVect是CGPoint的别名。
+注意：在 iphone 上，为了性能和兼容性，`cpFloat`被定义为`float`，`cpVect`是`CGPoint`的别名。
 
+<a name="2-Math the Chipmunk way"></a>
 ## 2.4 数学运算
 
-首先，Chipmunk默认使用双精度浮点数进行数学计算。在大多数现代台式机处理器下这样很可能更快点，并意味着你可以不用过多担心浮点舍入引起的误差。在编译库的时候你可以修改Chipmunk使用的浮点类型。请查看`chipmunk_types.h`。
+首先，Chipmunk 默认使用双精度浮点数进行数学计算。在大多数现代台式机处理器下这样很可能更快点，并意味着你可以不用过多担心浮点舍入引起的误差。在编译库的时候你可以修改 Chipmunk 使用的浮点类型。请查看`chipmunk_types.h`。
 
-Chipmunk为一些常用的数学函数定义了别名以便你可以用Chipmunk的浮点类型来代表`float`或者`double`类型。在你的代码里，或许没有充分的理由去使用这些别名，除非你预计今后你可能会改变Chipmunk的浮点类型，而且你很介意错误的使用`float/double`版本的数学函数所造成的2%的性能下降。
+Chipmunk 为一些常用的数学函数定义了别名以便你可以用Chipmunk的浮点类型来代表`float`或者`double`类型。在你的代码里，或许没有充分的理由去使用这些别名，除非你预计今后你可能会改变Chipmunk的浮点类型，而且你很介意错误的使用`float/double`版本的数学函数所造成的2%的性能下降。
 
 有一些函数或许你会发现非常有用：
 
--  cpFloat cpfclamp(cpFloat f, cpFloat min, cpFloat max) - 截断f在min和max之间
--  cpFloat cpflerp(cpFloat f1, cpFloat f2, cpFloat t) - 对f1和f2进行线性插值
--  cpFloat cpflerpconst(cpFloat f1, cpFloat f2, cpFloat d) - 从f1到f2不超过d的线性插值
+-  `cpFloat cpfclamp(cpFloat f, cpFloat min, cpFloat max)` - 截断f在min和max之间
+-  `cpFloat cpflerp(cpFloat f1, cpFloat f2, cpFloat t)` - 对f1和f2进行线性插值
+-  `cpFloat cpflerpconst(cpFloat f1, cpFloat f2, cpFloat d)` - 从f1到f2不超过d的线性插值
 
-浮点数无穷大被定义为`INFINITY`, 很多数学库中这样定义，但这实际上并不是C标准库的一部分。
+浮点数无穷大被定义为`INFINITY`, 很多数学库中这样定义，但这实际上并不是 C 标准库的一部分。
 
+<a name="3-Chipmunk Vectors: cpVect"></a>
 # 3. Chipmunk矢量：cpVect
 
+<a name="3-Struct Definition, Constants and Constructors"></a>
 ## 3.1 结构体定义、常量和构造函数
 
 定义：
@@ -265,37 +372,41 @@ static const cpVect cpvzero = {0.0f,0.0f};
 ```
 cpVect cpv(const cpFloat x, const cpFloat y)
 ```
+
+<a name="3-Operations"></a>
 ## 3.2 操作运算
 
-- cpBool cpveql(const cpVect v1, const cpVect v2) – 检测两个向量是否相等。在使用C++程序时，Chipmunk提供一个重载操作符`==`。（比较浮点数时要小心！）
-- cpVect cpvadd(const cpVect v1, const cpVect v2) – 两个向量相加。在使用C++程序时，Chipmunk提供一个重载操作符`+`。
-- cpVect cpvsub(const cpVect v1, const cpVect v2) – 两个向量相减。在使用C++程序时，Chipmunk提供一个重载操作符`-`。
-- cpVect cpvneg(const cpVect v) – 使一个向量反向。在使用C++程序时，Chipmunk提供一个重载一个一元负操作符`-`。
-- cpVect cpvmult(const cpVect v, const cpFloat s) – 标量乘法。在使用C++程序时，Chipmunk提供一个重载操作符`*`。
-- cpFloat cpvdot(const cpVect v1, const cpVect v2) – 向量的点积。
-- cpFloat cpvcross(const cpVect v1, const cpVect v2) – 2D向量交叉相乘的模。2D向量交叉相乘的积作为一个只有z坐标的3D向量的z值。函数返回z坐标的值。
-- cpVect cpvperp(const cpVect v) – 返回一个垂直向量。（旋转90度）
-- cpVect cpvrperp(const cpVect v) – 返回一个垂直向量。（旋转-90度）
-- cpVect cpvproject(const cpVect v1, const cpVect v2) – 返回向量v1在向量v2上的投影。
-- cpVect cpvrotate(const cpVect v1, const cpVect v2) – 使用复杂的乘法运算将向量v1按照向量v2旋转。如果v1不是单位向量，则v1会被缩放。
-- cpVect cpvunrotate(const cpVect v1, const cpVect v2) – 和cpvrotate()相反。
-- cpFloat cpvlength(const cpVect v) – 返回v的长度。
-- cpFloat cpvlengthsq(const cpVect v) – 返回v的长度的平方，如果只是比较长度的话它的速度比cpvlength()快。
-- cpVect cpvlerp(const cpVect v1, const cpVect v2, const cpFloat t) – 在v1和v2之间线性插值。
-- cpVect cpvlerpconst(cpVect v1, cpVect v2, cpFloat d) – 以长度d在v1和v2之间线性插值。
-- cpVect cpvslerp(const cpVect v1, const cpVect v2, const cpFloat t) – 在v1和v2之间球形线性插值。
-- cpVect cpvslerpconst(const cpVect v1, const cpVect v2, const cpFloat a) – 在v1和v2之间以不超过角a的弧度值球形线性插值。
-- cpVect cpvnormalize(const cpVect v) – 返回a的一个归一化副本。作为特殊例子，在调用cpvzero时返回cpvzero。
-- cpVect cpvclamp(const cpVect v, const cpFloat len) – 将v固定到len上。
-- cpFloat cpvdist(const cpVect v1, const cpVect v2) – 返回v1和v2间的距离。
-- cpFloat cpvdistsq(const cpVect v1, const cpVect v2) – 返回v1和v2间的距离的平方。如果只是比较距离的话它比cpvdist()快。
-- cpBool cpvnear(const cpVect v1, const cpVect v2, const cpFloat dist) – 如果v1和v2间的距离小于dist则返回真。
-- cpVect cpvforangle(const cpFloat a) – 返回所给角（以弧度）单位向量。
-- cpFloat cpvtoangle(const cpVect v) – 返回v所指的角度方向的弧度。
+- `cpBool cpveql(const cpVect v1, const cpVect v2)` – 检测两个向量是否相等。在使用 C++ 程序时，Chipmunk 提供一个重载操作符`==`。（比较浮点数时要小心！）
+- `cpVect cpvadd(const cpVect v1, const cpVect v2)` – 两个向量相加。在使用 C++ 程序时，Chipmunk提供一个重载操作符`+`。
+- `cpVect cpvsub(const cpVect v1, const cpVect v2)` – 两个向量相减。在使用C++程序时，Chipmunk提供一个重载操作符`-`。
+- `cpVect cpvneg(const cpVect v)` – 使一个向量反向。在使用 C++ 程序时， Chipmunk 提供一个重载一个一元负操作符`-`。
+- `cpVect cpvmult(const cpVect v, const cpFloat s)` – 标量乘法。在使用 C++ 程序时，Chipmunk提供一个重载操作符`*`。
+- `cpFloat cpvdot(const cpVect v1, const cpVect v2)` – 向量的点积。
+- `cpFloat cpvcross(const cpVect v1, const cpVect v2)` – 2D 向量交叉相乘的模。2D 向量交叉相乘的积作为一个只有z坐标的3D向量的z值。函数返回 z 坐标的值。
+- `cpVect cpvperp(const cpVect v)` – 返回一个垂直向量。（旋转90度）
+- `cpVect cpvrperp(const cpVect v)` – 返回一个垂直向量。（旋转-90度）
+- `cpVect cpvproject(const cpVect v1, const cpVect v2)` – 返回向量 v1 在向量 v2 上的投影。
+- `cpVect cpvrotate(const cpVect v1, const cpVect v2)` – 使用复杂的乘法运算将向量 v1 按照向量 v2 旋转。如果 v1 不是单位向量，则 v1 会被缩放。
+- `cpVect cpvunrotate(const cpVect v1, const cpVect v2)` – 和`cpvrotate()`相反。
+- `cpFloat cpvlength(const cpVect v)` – 返回 v 的长度。
+- `cpFloat cpvlengthsq(const cpVect v)` – 返回 v 的长度的平方，如果只是比较长度的话它的速度比`cpvlength()`快。
+- `cpVect cpvlerp(const cpVect v1, const cpVect v2, const cpFloat t)` – 在 v1 和 v2 之间线性插值。
+- `cpVect cpvlerpconst(cpVect v1, cpVect v2, cpFloat d)` – 以长度 d 在 v1 和 v2 之间线性插值。
+- `cpVect cpvslerp(const cpVect v1, const cpVect v2, const cpFloat t)` – 在 v1 和 v2 之间球形线性插值。
+- `cpVect cpvslerpconst(const cpVect v1, const cpVect v2, const cpFloat a)` – 在 v1 和 v2 之间以不超过角 a 的弧度值球形线性插值。
+- `cpVect cpvnormalize(const cpVect v)` – 返回 a 的一个归一化副本。作为特殊例子，在调用 cpvzero 时返回 cpvzero。
+- `cpVect cpvclamp(const cpVect v, const cpFloat len)` – 将 v 固定到 len 上。
+- `cpFloat cpvdist(const cpVect v1, const cpVect v2)` – 返回 v1 和 v2 间的距离。
+- `cpFloat cpvdistsq(const cpVect v1, const cpVect v2)` – 返回 v1 和 v2 间的距离的平方。如果只是比较距离的话它比`cpvdist()`快。
+- `cpBool cpvnear(const cpVect v1, const cpVect v2, const cpFloat dist)` – 如果 v1 和 v2 间的距离小于 dist 则返回真。
+- `cpVect cpvforangle(const cpFloat a)` – 返回所给角（以弧度）单位向量。
+- `cpFloat cpvtoangle(const cpVect v)` – 返回v所指的角度方向的弧度。
 
 
+<a name="4-Chipmunk Axis Aligned Bounding Boxes: cpBB"></a>
 # 4. Chipmunk轴对齐包围盒：cpBB
 
+<a name="4-Struct Definition and Constructors"></a>
 ## 4.1 结构体定义和构造函数
 
 -  简单的包围盒结构体，存储着`left`,`bottom`,`right`,`top`等值。
@@ -318,33 +429,46 @@ cpBB cpBBNew(const cpFloat l, const cpFloat b, const cpFloat r, const cpFloat t)
 cpBB cpBBNewForCircle(const cpVect p, const cpFloat r)
 ```
 
-
+<a name="4-Operations"></a>
 ## 4.2 操作运算
 
--  cpBool cpBBIntersects(const cpBB a, const cpBB b) - 如果边界框相交返回true
--  cpBool cpBBContainsBB(const cpBB bb, const cpBB other) - 如果`bb`完全包含`other`返回true
--  cpBool cpBBContainsVect(const cpBB bb, const cpVect v) - 如果`bb`包含`v`返回true
--  cpBB cpBBMerge(const cpBB a, const cpBB b) - 返回包含`a`和`b`的最小的边界框
--  cpBB cpBBExpand(const cpBB bb, const cpVect v) - 返回包含`bb`和`v`的最小的边界框
--  cpVect cpBBCenter(const cpBB bb) - 返回`bb`的中心点矢量
--  cpFloat cpBBArea(cpBB bb) - 返回`bb`矢量表示的边界框的面积
--  cpFloat cpBBMergedArea(cpBB a, cpBB b) - 合并`a`和`b`然后返回合并后的矢量的边界框的面积
--  cpFloat cpBBSegmentQuery(cpBB bb, cpVect a, cpVect b) - 返回分段查询相交`bb`的相交点个数，如果没有相交，返回`INFINITY`
--  cpBool cpBBIntersectsSegment(cpBB bb, cpVect a, cpVect b) - 如果由`a`和`b`两端点定义的线段和`bb`相交返回true
--  cpVect cpBBClampVect(const cpBB bb, const cpVect v) - 返回`v`在边界框中被截断的矢量的副本
--  cpVect cpBBWrapVect(const cpBB bb, const cpVect v) - 返回`v`包含边界框的矢量的副本
+-  `cpBool cpBBIntersects(const cpBB a, const cpBB b)` - 如果边界框相交返回true
+-  `cpBool cpBBContainsBB(const cpBB bb, const cpBB other)` - 如果`bb`完全包含`other`返回 true
+-  `cpBool cpBBContainsVect(const cpBB bb, const cpVect v)` - 如果`bb`包含`v`返回true
+-  `cpBB cpBBMerge(const cpBB a, const cpBB b)` - 返回包含`a`和`b`的最小的边界框
+-  `cpBB cpBBExpand(const cpBB bb, const cpVect v)` - 返回包含`bb`和`v`的最小的边界框
+-  `cpVect cpBBCenter(const cpBB bb)` - 返回`bb`的中心点矢量
+-  `cpFloat cpBBArea(cpBB bb)` - 返回`bb`矢量表示的边界框的面积
+-  `cpFloat cpBBMergedArea(cpBB a, cpBB b)` - 合并`a`和`b`然后返回合并后的矢量的边界框的面积
+-  `cpFloat cpBBSegmentQuery(cpBB bb, cpVect a, cpVect b)` - 返回分段查询相交`bb`的相交点个数，如果没有相交，返回`INFINITY`
+-  `cpBool cpBBIntersectsSegment(cpBB bb, cpVect a, cpVect b)` - 如果由`a`和`b`两端点定义的线段和`bb`相交返回true
+-  `cpVect cpBBClampVect(const cpBB bb, const cpVect v)` - 返回`v`在边界框中被截断的矢量的副本
+-  `cpVect cpBBWrapVect(const cpBB bb, const cpVect v)` - 返回`v`包含边界框的矢量的副本
 
+<a name="5-Chipmunk Rigid Bodies: cpBody"></a>
 # 5. Chipmunk刚体：cpBody
 
-## 5.1 游离和静态刚体
+<a name="5-Dynamic, Kinematic, and Static Bodies"></a>
+## 5.1 动态，运动学和静态刚体
 
-一般当我们创建一个刚体并将它添加到空间上后，空间就开始对之进行模拟，包括了对刚体位置、速度、受力以及重力影响等的模拟。没被添加到空间（没有被模拟）的刚体我们把它称之为*游离刚体*。游离刚体最重要的用途就是用来当作静态刚体，但是你仍然可以使用它们来实现直接控制物体，如移动平台。
+Chipmunk 支持3种具有独特行为和表现特性的不同类型的刚体。
 
-静态刚体是游离刚体，但被设置了一个特殊的标志以便让Chipmunk知道它们从不移动除非你要求这么做。静态刚体有两个目的。最初，它们被加入用来实现休眠功能。因为静态刚体不移动，Chipmunk知道让那些与静态刚体接触或者连接的物体安全的进入休眠。接触或连接常规游离刚体的物体从不允许休眠。静态刚体的第二个目的就是让Chipmunk知道，关联到静态刚体的碰撞形状是不需要更新碰撞检测数据的。Chipmunk也不需要操心静态物体之间的碰撞检测。通常所有的关卡几何图形都会被关联到一个静态刚体上除了那些能够移动的东西，例如平台或门等。
+动态刚体是默认的刚体类型。他们对碰撞进行响应，受到力和重力的影响，并且具有一定的质量。动态刚体便是你想让物理引擎为你模拟的刚体。动态刚体与所有类型的刚体进行相互作用
+并且产生碰撞回调。
 
-在Chipmunk5.3版本之前，你要创建一个无限大质量的游离刚体，通过`cpSpaceAddStaticShape()`来添加静态形状。现在你不必这样做了，并且如果你想使用休眠功能也不应该这样做了。每一个空间都有一个专用的静态刚体，你可以使用它来添加静态形状。Chipmunk也会自动将形状作为静态形状添加到静态刚体上。
+运动学刚体是被代码控制而不是物理物理引擎控制的刚体。他们不受重力的影响而且他们有着无穷大的质量所以他们不会对碰撞进行相应或者对其他刚体施加力。运动学刚体通过设定速度来控制移动。一个不错的例子比如平台游戏中的移动平台。与运动学刚体触碰或者连接的对象永远不允许休眠。
 
-## 5.2 内存管理函数
+静态刚体是从来不会（或很少）移动的刚体。为地形这样的东西使用静态刚体而不是动态刚体会带来巨大的性能提升因为 Chipmunk 不需要检测静态刚体之间的碰撞并且从不需要更新他们的碰撞信息。另外，因为静态刚体不会移动，Chipmunk 知道让与他们接触或者连接的刚体进行休眠是安全的。通常你关卡中的所有图形会被关联上一个静态刚体除了那些会移动的平台或者门。每一个空间提供了一个内置的静态刚体来方便我们使用。静态刚体可以被移动，但是会带来性能损失响因为要重新计算碰撞信息。拥有多个静态刚体不会带来性能损失，所以通过将静态的几何对象拆分成不同部分来初始化或者单独移动来简化代码变得很有用。
+
+<a name="5-Movement, Teleportation, and Velocity"></a>
+## 5.2 运动，瞬移和速度
+
+图形引擎只需要知道对象的位置来描绘它在每帧中的位置。对于物理引擎来说，这样的信息是不足以来计算碰撞响应的。当你设定一个刚体的位置时，你实际上在对刚体本身做瞬移。这意味着将刚体移动到新的位置是瞬时的，而不是像普通的对象一样通过一段时间和空间运动到新的位置。如果你瞬移一个对象，以便它和另外一个对象重合，物理引擎能做的最好的工作便是尝试着将对象分开因为没有关于他们运动的信息。这通常会导致寻找碰撞变得困难起来。所以取代直接设置对象的位置，最好应该是设置它的速度并且允许物理引擎去更新它的位置。这样就可以很自然的解决碰撞了，因为引擎知道对象是如何鱼洞的。这就是为什么运动学刚体工作的方式。你设定了速度，然后物理引擎来更新他们的位置所以他们永远不会不同步。
+
+对于动态刚体来说，在每帧中显式的设置速度会引起一些问题。例如，当一个轻量的动态刚体（比如一个人）在推动一个重量的动态刚体（比如一个车）便会引起问题，当你为小的刚体设定速度以便物体在推动着大的刚体。对于物理引擎而言，速度上的改变和施加一个比较大的冲力（时间很短，但非常大的力）是一样的。即使速度很小，巨大的力却能够使得小刚体来推动大刚体，即使通常情况下不能做到。举个例子，一个人走进汽车并增大汽车的摩擦力使得汽车在路面上缓慢行进。此外，当你为已经处于接触状态下的物体设定速度，将会引起两个物体发生少量的重叠。避免这些问题最简单的方式就是对刚体的速度做很细微的改变，通过几分之一秒的时间来对速度进行加速而不是每一个单帧。一个更好点的解决方案，在以后会被更多的使用，就是使用关节约束来移动对象。
+
+<a name="5-Memory Management Functions"></a>
+## 5.3 内存管理函数
 
 ```
 cpBody *cpBodyAlloc(void)
@@ -355,23 +479,22 @@ void cpBodyDestroy(cpBody *body)
 void cpBodyFree(cpBody *body)
 ```
 
-如上是一套标准的Chipmunk内存管理函数。`m`和`i`是刚体的质量和转动惯量。猜想刚体的质量通常是可行的，但是猜想刚体的转动惯量却会导致一个很差的模拟。在任何关联到刚体的形状或者约束从空间移除之前注意不要释放刚体。
+如上是一套标准的 Chipmunk 内存管理函数。`m`和`i`是刚体的质量和转动惯量。猜想刚体的质量通常是可行的，但是猜想刚体的转动惯量却会导致一个很差的模拟。在任何关联到刚体的形状或者约束从空间移除之前注意不要释放刚体。
 
 
-## 5.3 创建额外静态刚体
+<a name="5-Creating Dynamic Bodies"></a>
+## 5.4 创建动态刚体
 
-每一个`cpSpace`都有一个可以直接使用的内置静态刚体，同时你也可以便利地构建自己的静态刚体。一个潜在的用途就是用在关卡编辑器中。你可以把关卡的不同组块关联到不同的静态刚体上，这样你仍然可以独立的移动和旋转每一个组块。你要做的只是在操作完成之后调用`cpSpaceRehashStatic()`来重建静态碰撞检测的数据。
+有两种方式来创建动态刚体。最简单的方式就是创建一个具有一个质量和转动惯量为0的刚体，并且为添加到刚体中的每一对碰撞形状设定质量或者密度。Chipmunk 会为你自动计算质量，转动惯量和重心。在大部分情况下会选择这个方式。
 
-关于游离和静态刚体的更多信息，请看Chipmunk空间。
+例子待完成。
 
-```
-cpBody *cpBodyAlloc(void);
-cpBody *cpBodyInitStatic(cpBody *body)
-cpBody *cpBodyNewStatic()
-```
-创建额外的具有无限的质量和转动惯量的静态刚体。
+另外一个方式就是在刚体创建之后设定质量，并且将添加到刚体中的形状的质量设定为0.0。这个方案更具有灵活性，但是却不容易使用。不要为刚体和形状都设定质量。如果你这么做了，当你为刚体添加形状时将会重新计算和重写你的自定义质量数值。
 
-## 5.4 属性
+例子待完成。
+
+<a name="5-Properties"></a>
+## 5.5 属性
 
 Chipmunk为刚体的多个属性提供了getter/setter函数。如果刚体在休眠状态，设置大多数属性会自动唤醒它们。如果你想，你也可以直接在`cpBody`结构体内设置字段。它们都在头文件中有记录。
 
@@ -453,15 +576,15 @@ void cpBodySetUserData(cpBody *body, const cpDataPointer value)
 ```
 使用数据指针。使用该指针从回调中获取拥有该刚体的游戏对象的引用。
 
-
-## 5.5 转动惯量和面积帮助函数
+<a name="5-Moment of Inertia and Area Helper Functions"></a>
+## 5.6 转动惯量和面积帮助函数
 
 使用以下函数来近似计算出刚体的转动惯量，如果想得到多个，那就将结果相加在一起。
 
--  cpFloat cpMomentForCircle(cpFloat m, cpFloat r1, cpFloat r2, cpVect offset) – 计算空心圆的转动惯性，r1和r2是在任何特定顺序下的内径和外径。 （实心圆圈的内径为0）
--  cpFloat cpMomentForSegment(cpFloat m, cpVect a, cpVect b) – 计算线段的转动惯量。端点`a`和`b`相对于刚体。
--  cpFloat cpMomentForPoly(cpFloat m, int numVerts, const cpVect *verts, cpVect offset) – 计算固定多边形的转动惯量，假设它的中心在质心上。`offset`偏移值被加到每个顶点。
--  cpFloat cpMomentForBox(cpFloat m, cpFloat width, cpFloat height) – 计算居中于刚体的实心矩形的转动惯量。
+-  `cpFloat cpMomentForCircle(cpFloat m, cpFloat r1, cpFloat r2, cpVect offset)` – 计算空心圆的转动惯性，r1和r2是在任何特定顺序下的内径和外径。 （实心圆圈的内径为0）
+-  `cpFloat cpMomentForSegment(cpFloat m, cpVect a, cpVect b)` – 计算线段的转动惯量。端点`a`和`b`相对于刚体。
+-  `cpFloat cpMomentForPoly(cpFloat m, int numVerts, const cpVect *verts, cpVect offset)` – 计算固定多边形的转动惯量，假设它的中心在质心上。`offset`偏移值被加到每个顶点。
+-  `cpFloat cpMomentForBox(cpFloat m, cpFloat width, cpFloat height)` – 计算居中于刚体的实心矩形的转动惯量。
 
 转动惯量例子
 
@@ -482,42 +605,51 @@ cpFloat composite = cpMomentForBox(boxMass, 1, 4) + cpMomentForCircle(circleMass
 
 如果你想近似计算诸如质量或密度此类的东西，可以使用下列函数来获取Chipmunk形状区域。
 
--  cpFloat cpAreaForCircle(cpFloat r1, cpFloat r2) – 空心圆形状面积
--  cpFloat cpAreaForSegment(cpVect a, cpVect b, cpFloat r) – 斜线段面积。（如果半径为0的话永远为0）
--  cpFloat cpAreaForPoly(const int numVerts, const cpVect *verts) – 多边形形状的面积。多边形为凹多边形时返回一个负值。
+-  `cpFloat cpAreaForCircle(cpFloat r1, cpFloat r2)` – 空心圆形状面积
+-  `cpFloat cpAreaForSegment(cpVect a, cpVect b, cpFloat r)` – 斜线段面积。（如果半径为0的话永远为0）
+-  `cpFloat cpAreaForPoly(const int numVerts, const cpVect *verts)` – 多边形形状的面积。多边形为凹多边形时返回一个负值。
 
-
-## 5.6 坐标系转换函数
+<a name="5-Coordinate Conversion Functions"></a>
+## 5.7 坐标系转换函数
 
 许多事情被定义在刚体的局部坐标，也就意味着（0,0）是刚体的重心和轴线旋转中心。
 
--  cpVect cpBodyLocal2World(const cpBody *body, const cpVect v) – 从刚体局部坐标系转换到世界坐标系
--  cpVect cpBodyWorld2Local(const cpBody *body, const cpVect v) – 从世界坐标系转换到刚体的局部坐标系
+-  `cpVect cpBodyLocal2World(const cpBody *body, const cpVect v)` – 从刚体局部坐标系转换到世界坐标系
+-  `cpVect cpBodyWorld2Local(const cpBody *body, const cpVect v)` – 从世界坐标系转换到刚体的局部坐标系
 
-## 5.7 施加力和力矩
+<a name="5-Velocity Conversion Functions"></a>
+## 5.8 速度转换函数
+
+通常知道刚体表面在某一点的绝对速度是很有用的，因为角速度影响刚体的一切除了重心。
+
+-  `cpVect cpBodyVelocityAtWorldPoint(const cpBody *body, const point)` -计算刚体在给定世界坐标系某点上的绝对速度
+-  `cpVect cpBodyVelocityAtLocalPoint(const cpBody *body, const point)` -计算刚体在给定刚体的局部坐标系某点上的绝对速度
+
+<a name="5-Applying Forces and Torques"></a>
+## 5.9 施加力和力矩
 
 人们有时候容易混淆力和冲量之间的区别。冲量基本上是一个在非常短的时间内施加的一个非常大的力，就像一个球击中一堵墙或者大炮射击一样。Chipmunk的冲量会在一瞬间直接施加在物体的速度上。无论是力还是冲量都受到物体质量的影响。物体质量翻倍，则效果减半。
 
--  void cpBodyResetForces(cpBody *body) – 对刚体施加0值的力和扭矩
--  void cpBodyApplyForce(cpBody *body, const cpVect f, const cpVect r) – 在离重心相对偏移量为r的位置施加`f`的力于`body`上
--  void cpBodyApplyImpulse(cpBody *body, const cpVect j, const cpVect r) – 在离重心相对偏移量为r的位置施加`j`的冲量于`body`上。
+-  `void cpBodyResetForces(cpBody *body)` – 对刚体施加0值的力和扭矩
+-  `void cpBodyApplyForce(cpBody *body, const cpVect f, const cpVect r)` – 在离重心相对偏移量为r的位置施加`f`的力于`body`上
+-  `void cpBodyApplyImpulse(cpBody *body, const cpVect j, const cpVect r)` – 在离重心相对偏移量为r的位置施加`j`的冲量于`body`上。
 
 注: `cpBodyApplyForce()`和`cpBodyApplyImpulse()`两者都是在绝对坐标系中施加力或者冲量，并在绝对坐标系中产生相对的偏移。（偏移量相对于重心位置，但不随刚体旋转）
 
-
-## 5.8 休眠函数
+<a name="5-Sleeping Functions"></a>
+## 5.10 休眠函数
 
 Chipmunk支持休眠功能，以便其停止使用CPU时间来模拟移动的对象组。更多信息请查阅cpSpace部分。
 
--  cpBool cpBodyIsSleeping(const cpBody *body) – 如果刚体在休眠则返回`true`。
--  void cpBodyActivate(cpBody *body) – 重设刚体的闲置时间。如果在休眠，则会唤醒它以及和它接触的任何其他刚体。
--  void cpBodySleep(cpBody *body) – 强制一个刚体立即进入休眠，即使它在半空中。不能从回调中被调用。
--  void cpBodyActivateStatic(cpBody *body, cpShape *filter) – 和`cpBodyActivate()`功能类似。激活刚体接触的所有刚体。如果`filter`不为`NULL`，那么只有通过筛选过滤的刚体才会被唤醒。
+-  `cpBool cpBodyIsSleeping(const cpBody *body)` – 如果刚体在休眠则返回`true`。
+-  `void cpBodyActivate(cpBody *body)` – 重设刚体的闲置时间。如果在休眠，则会唤醒它以及和它接触的任何其他刚体。
+-  `void cpBodySleep(cpBody *body)` – 强制一个刚体立即进入休眠，即使它在半空中。不能从回调中被调用。
+-  `void cpBodyActivateStatic(cpBody *body, cpShape *filter)` – 和`cpBodyActivate()`功能类似。激活刚体接触的所有刚体。如果`filter`不为`NULL`，那么只有通过筛选过滤的刚体才会被唤醒。
 
 ```
 void cpBodySleepWithGroup(cpBody *body, cpBody *group)
 ```
-当对象在Chipmunk中处于休眠时，和它接触或连接在一起的所有刚体都会作为一组进入休眠。当对象被唤醒时，和它一组的所有对象都会被唤醒。 `cpBodySleepWithGroup()`允许你将群组中的对象一起休眠。如果你通过一个新的组给`groups` 传递`NULL`值，则它和`cpBodySleep()`功能一样。如果你为`groups`传入一个休眠的刚体，那么当`group`是唤醒状态时，`body`也会被唤醒。你可以通过这来初始化关卡并将堆栈中的对象置为预休眠状态。
+当对象在 Chipmunk 中处于休眠时，和它接触或连接在一起的所有刚体都会作为一组进入休眠。当对象被唤醒时，和它一组的所有对象都会被唤醒。 `cpBodySleepWithGroup()`允许你将群组中的对象一起休眠。如果你通过一个新的组给`groups` 传递`NULL`值，则它和`cpBodySleep()`功能一样。如果你为`groups`传入一个休眠的刚体，那么当`group`是唤醒状态时，`body`也会被唤醒。你可以通过这来初始化关卡并将堆栈中的对象置为预休眠状态。
 
 休眠例子
 
@@ -548,8 +680,8 @@ for(int i=0; i<5; i++){
 }
 ```
 
-
-## 5.9 迭代器
+<a name="5-Iterators"></a>
+## 5.11 迭代器
 
 ```
 typedef void (*cpBodyShapeIteratorFunc)(cpBody *body, cpShape *shape, void *data)
@@ -598,22 +730,12 @@ EstimateCrushForce(cpBody *body, cpFloat dt)
 }
 ```
 
-## 5.10 嵌入回调
+<a name="5-Integration Callbacks"></a>
+## 5.12 嵌入回调
 
 这部分是残留。现在你可以看看星球演示这个例子，看如何使用嵌入回调来实现的行星重力。
 
-## 5.11 杂项函数
-
--  `cpBool cpBodyIsStatic(const cpBody *body)` - 如果`body`是静态刚体的话，返回`true`。无论是`cpSpace.staticBody`，还是由`cpBodyNewStatic()`或者`cpBodyInitStatic()`创建的刚体。
--  `cpBool cpBodyIsRogue(const cpBody *body) `- 如果刚体从来没有被加入到空间的话返回`true`。
-
-## 5.12 札记
-
--  如果可能的话使用力来修正刚体。这样是最稳定的。
--  修正刚体的速度是不可避免的，但是在每帧对刚体的速度做巨大的变化会造成一些奇怪的模拟。你可以自由实验，但别说我没警告你哦。
--  不要在单步中修正刚体的位置除非你确实知道你在干什么。否则你得到的位置、速度则会不同步。
--  如果在调用`cpSpaceRemoveShape()`之前你就要释放一个刚体，那么会引起崩溃。
-
+<a name="6-Chipmunk Collision Shapes: cpShape"></a>
 # 6. Chipmunk碰撞形状：cpShape
 
 当前有三种类型的碰撞形状：
@@ -626,13 +748,8 @@ EstimateCrushForce(cpBody *body, cpFloat dt)
 
 不管创建何种类型的形状，你总是会得到一个`cpShape*`指针。这是因为Chipmunk的形状是不透明的类型。想象一下具体的碰撞形状类型，如`cpCircleShape`, `cpSegmentShape`和`cpPolyShape`, 他们都是`cpShape`的私有子类。但是你仍然可以使用`getter`函数来获取他们的属性，而不需要将`cpShape`指针转成他们特定的类型指针。
 
-
-## 6.1 札记
-
-Chipmunk直到 6.1.2 版本才支持线段、线段碰撞。由于兼容性的原因，你必须调用`cpEnableSegmentToSegmentCollisions()`来全局明确地启用它们。 （感谢LegoCylon对此的帮助）
-
-
-## 6.2 属性
+<a name="6-Properties"></a>
+## 6.1 属性
 
 Chipmunk为一些碰撞形状属性提供了`getter/ setter`函数。如果形状关联的刚体在休眠，设置多数属性都会自动唤醒它们。如果你想的话，也可以直接设置`cpShape`结构的某些字段。他们在头文件中都记录有。
 
@@ -668,7 +785,7 @@ cpFloat cpShapeGetFriction(const cpShape *shape)
 void cpShapeSetFriction(cpShape *shape, cpFloat value)
 ```
 
-摩擦系数。Chipmunk使用的是库仑摩擦力模型，0.0值表示无摩擦。碰撞间的摩擦是由单个形状的摩擦相乘找到。[摩擦系数表](http://www.roymech.co.uk/Useful_Tables/Tribology/co_of_frict.htm)
+摩擦系数。Chipmunk 使用的是库仑摩擦力模型，0.0值表示无摩擦。碰撞间的摩擦是由单个形状的摩擦相乘找到。[摩擦系数表](http://www.roymech.co.uk/Useful_Tables/Tribology/co_of_frict.htm)
 
 ```
 cpVect cpShapeGetSurfaceVelocity(const cpShape *shape)
@@ -710,30 +827,34 @@ void cpShapeSetUserData(cpShape *shape, cpDataPointer value)
 
 用户自定义数据的指针。如果你设置将其指向形状关联的游戏对象，那么你可以在Chipmunk回调中访问你的游戏对象。
 
-## 6.3 碰撞过滤
+<a name="6-Fast Collision Filtering using cpShapeFilter"></a>
+## 6.2 使用 cpShapeFilter 进行快速碰撞过滤
 
-Chipmunk 有两种主要的途径来忽略碰撞: **群组和层**。
+Chipmunk 有两种主要的途径来忽略碰撞：**群组和类别掩码**。
 
-群组是为了忽略一个复杂对象内部元素之间的碰撞。布娃娃是一个很好的例子。当把手臂和躯干连接到一起的时候，你会希望它们可以部分重叠。群组允许这样做。相同群组间的形状不产生碰撞。所以通过将一个布娃娃的所有形状放在同一群组中，就会阻止其碰撞自身的其它部件。
+群组是为了忽略一个复杂对象内部元素之间的碰撞。布娃娃是一个很好的例子。当把手臂和躯干连接到一起的时候，你会希望它们可以部分重叠。群组允许这样做。相同群组间的形状不产生碰撞。所以通过将一个布娃娃的所有形状放在同一群组中，就会阻止其碰撞自身的其它部件。类别掩码允许你将一个标记对象所属的类别和与其碰撞的类别。
 
-层允许你将碰撞的形状分离在互斥的位面。形状可以隶属于一个或多个层，而两个形状要发生碰撞，必须有至少一个层是相同的。举一个简单的例子，比如说形状A是在第1层，形状B是在第2层和形状C是在层1和2上。形状A和B不会互相碰撞，但形状C将与这两个A和B发生碰撞
+举个例子，一个游戏有4中碰撞类别：玩家（0），敌人（1），玩家子弹（2），敌人子弹（3）。玩家和敌人都不会和自身发出的子弹碰撞，并且子弹也不会与子弹碰撞。然而，玩家与敌人子弹，敌人与玩家子弹会发生碰撞。
 
-层也可以用于建立基于碰撞的规则。比如说在你的游戏中有四种类型的形状。玩家，敌人，玩家子弹，敌人子弹。玩家应该和敌人发生碰撞，但子弹却不应该和发射者碰撞。图表类似下图：
+| 对象         | 对象类别         |  类别掩码  | |-------------|:---------------:|:--------------:| 
+| "玩家"        | 1               | 4,5            |
+| "敌人"        | 2               | 2,3,5          |
+| "玩家子弹"     | 3               | 1,5            |
+| "敌人子弹"     | 4               | 2,5            |
+| "墙壁"        | 5               | 1,2,3,4        |
 
+注意例子中的一切对象都会和墙壁发生碰撞。另外敌人之间也会相互碰撞。
 
-|              | Player | Enemy  | Player Bullet  | Enemy Bullet|
-| -------------|:------:|:------:| :-------------:|:-----------:|
-| Player       | -      | (1)    |                | (2)         |
-| Enemy        | -      | -      | (3)            |             |
-| Player Bullet| -      | -      | -              |             |
-| Enemy Bullet | -      | -      | -              | -           |
+默认的，存在于每个类别中的对象与每个类别发生碰撞。
 
+Objects can fall into multiple categories. For instance, you might have a category for a red team, and have a red player bullet. In the above example, each object only has one category. If you make use of multiple categories on an object, you may also wish to consider replacing the cpShapeFilter struct and the cpShapeFilterReject() function in chipmunk_private.h to customize it to better suit your game’s needs.
 
-图表中‘-’代表冗余，数字的地方应该发生碰撞。你可以每一个规则对应一个层。然后将层添加到类型上：玩家应该在层1和2中，敌人应该是在层1和3中，玩家的子弹应该是在层3中，敌人的子弹应该是在层2中。这种把层当作规则的方式，可以定义多达32个规则。默认`cpLayers`类型为`unsigned int`在大多数系统是32位的。如果你需要更多的比特来完成工作, 你可以在`chipmunk_types.h`中重新定义`cpLayers`类型。
+The default type of categories and mask in cpShapeFilter is unsigned int which has a resolution of 32 bits on most systems. You can redefine cpBitmask in chipmunk_types.h if you need more bits to work with.
 
-还有最后一个方法通过碰撞处理函数来过滤碰撞。详情请见回调部分。碰撞处理程序可以更灵活，但它们也是最慢的方法。所以，你要优先尝试使用群组或层。
+还有最后一个方法通过碰撞处理函数来过滤碰撞。详情请见[回调部分](#11-Collision Callbacks)。碰撞处理程序可以更灵活，但它们也是最慢的方法。快速碰撞过滤会在运行碰撞检测昂贵的代码之前会否决碰撞，所以请选择使用群组或者类别掩码。
 
-## 6.4 内存管理函数
+<a name="6-Memory Management Functions"></a>
+## 6.3 内存管理函数
 
 ```
 void cpShapeDestroy(cpShape *shape)
@@ -741,13 +862,15 @@ void cpShapeFree(cpShape *shape)
 ```
 `Destroy`和`Free`函数由所有形状类型共享。分配和初始化函数特定于每一个形状。见下文。
 
-## 6.5 其他函数
+<a name="6-Misc Functions"></a>
+## 6.4 其他函数
 
 -  cpBB cpShapeCacheBB(cpShape *shape) – 同步`shape`和与之关联的刚体
 -  cpBB cpShapeUpdate(cpShape *shape, cpVect pos, cpVect rot) – 设置形状的位置和旋转角度
 -  void cpResetShapeIdCounter(void) – Chipmunk使用了一个计数器，以便每一个新的形状都能在空间索引中使用唯一的哈希值。因为会影响发现和处理碰撞的顺序，所以每次用新的形状重建空间时你可以重置形状计数器。否则，模拟可能会有很（极）小的差别。
 
-## 6.6 圆形形状
+<a name="6-Working With Circle Shapes"></a>
+## 6.5 圆形形状
 
 ```
 cpCircleShape *cpCircleShapeAlloc(void)
@@ -764,7 +887,8 @@ cpFloat cpCircleShapeGetRadius(cpShape *circleShape)
 
 圆形形状属性的getter函数。传一个非圆形形状将会抛出一个断言。
 
-## 6.7 线段形状
+<a name="6-Working With Segment Shapes"></a>
+## 6.6 线段形状
 
 ```
 cpSegmentShape* cpSegmentShapeAlloc(void)
@@ -786,7 +910,8 @@ void cpSegmentShapeSetNeighbors(cpShape *shape, cpVect prev, cpVect next)
 ```
 当你有一些连接在一起的线段形状时，线段仍然可以与线段间的“裂缝”碰撞。通过设置相邻线段的端点，你告诉Chipmunk来避免裂缝内部碰撞。
 
-## 6.8 多边形形状
+<a name="6-Working With Polygon Shapes"></a>
+## 6.7 多边形形状
 
 ```
 cpPolyShape *cpPolyShapeAlloc(void)
@@ -872,29 +997,34 @@ cpBody *body = cpBodyNew(mass, cpMomentForPoly(mass, hullCount, hullVerts, cpvze
 cpShape *shape = cpPolyShapeNew(body, hullCount, hullVerts, cpvzero);
 
 ```
-
-## 6.9 修改cpShapes
+<a name="6-Modifying cpShapes"></a>
+## 6.8 修改cpShapes
 
 简短的回答是你不能修改，因为这些更改都只会被提炼成形状表面的位置的变化，连速度都不会变。长一点儿的回答是，你可以使用“不安全”的API，但是你要知道现实生活中的物理实验是不会得到这样的结果的。这些额外的功能都在单独的头文件`chipmunk_unsafe.h`中定义。
 
-## 6.10 札记
+<a name="6-Notes"></a>
+## 6.9 札记
 
 -  你可以将多个碰撞形状关联到刚体上。这样你就可以创建几乎任何形状。 
 -  关联在同一个刚体上的形状不会产生碰撞。你不必担心同个刚体上的形状的重叠问题。 
 -  确保刚体和刚体的碰撞形状都被添加进了空间。除非你有一个外部刚体或者一个自己维护的刚体，这中情况下，只需把形状添加进空间。
 
+<a name="7-Chipmunk Spaces: cpSpace"></a>
 # 7. Chipmunk空间：cpSpace
 
 Chipmunk的空间是模拟的基本单元。你将刚体、形状和约束添加进去然后通过时间来步进更新模拟。
 
+<a name="7-What Are Iterations, and Why Should I Care?"></a>
 ## 7.1 什么是迭代？为什么我要关心？
 
 Chipmunk使用一个迭代求解器来计算出空间刚体之间的力。也就是说它建立了刚体间的所有碰撞、关节和约束的一个列表，并在列表中逐个考虑每一个刚体的若干条件。遍数这些条件便得到迭代次数，且每次迭代会使求解更准确。如果你使用太多的迭代，物理效果看起来应该不错并且坚实稳定，但可能消耗太多的CPU时间。如果你使用过少的迭代，模拟仿真似乎看起来有些糊状或弹性，而物体应该是坚硬的。设置迭代次数可以让你在CPU使用率和物理精度上做出平衡。 Chipmunk中默认的迭代值是10，足以满足大多数简单的游戏。
 
+<a name="7-Sleeping"></a>
 ## 7.2 休眠
 
 休眠是Chipmunk5.3新功能，是指空间停用已停止移动的整个对象群组，以节省CPU时间和电池寿命的能力。为了使用此功能，你必须做两件事情。第一个是，你必须将你的所有静态几何关联到静态刚体。如果对象接触的是非静态游离体，则它们不能进入休眠，即使它的形状是作为静态形状添加的。第二个是，你必须通过`cpSpace.sleepTimeThreshold`设置一个时间阈值来显式启用休眠。如果你没有明确设置`cpSpace.idleSpeedThreshold`，那么Chipmunk会基于当前重力自动产生一个休眠阈值。
 
+<a name="7-Properties"></a>
 ## 7.3 属性
 
 ```
@@ -970,6 +1100,7 @@ cpBody * cpSpaceGetStaticBody(const cpSpace *space)
 
 空间中专用的静态刚体。你不必使用它，而是因为它的内存由空间自动管理，非常方便。如果你想要做回调的话，你可以将它的数据指针指向一些有用的东西。
 
+<a name="7-Memory Management Functions"></a>
 ## 7.4 内存管理函数
 
 ```
@@ -987,6 +1118,7 @@ void cpSpaceFreeChildren(cpSpace *space)
 ```
 这个函数将释放所有已添加到空间中的的形状、刚体和关节。不要释放`space`空间。你仍然需要自己调用`cpSpaceFree()`。在一个真正的游戏中你可能永远不会使用这个，因为你的游戏状态或者游戏控制器应该会管理从空间移除并释放对象。
 
+<a name="7-Operations"></a>
 ## 7.5 操作运算
 ```
 cpShape *cpSpaceAddShape(cpSpace *space, cpShape *shape)
@@ -1005,15 +1137,8 @@ cpBool cpSpaceContainsConstraint(cpSpace *space, cpConstraint *constraint)
 
 这些函数是从空间中添加和删除形状、刚体和约束。添加/删除函数不能在`postStep()`回调之外的回调内调用(这和postSolve()回调是不同的!)。当`cpSpaceStep()`仍然在执行时，试图从空间添加或删除对象会抛出一个断言。更多信息请参见回调部分。添加函数会返回被添加的对象以便你可以在一行中创建和添加一些东西。注意在移除关联到刚体的形状和约束之前不要去释放刚体，否则会造成崩溃。`contains`函数允许你检查一个对象有没有被添加到空间中。
 
-## 7.6 静态动态转换函数
-
-```
-void cpSpaceConvertBodyToStatic(cpSpace *space, cpBody *body)
-```
-将刚体转换为静态刚体。它的质量和力矩将被设置为无穷大，并且速度为0。旧的质量和力矩以及速度都不会被保存。这将有效地将一个刚体和它的形状冻结到一个位置。这不能被一个激活的刚体调用，所以你可能需要先调用`cpSpaceRemoveBody()`。此外，因为它修改了碰撞检测的数据结构，如果你想从另外一个回调函数或迭代器使用你必须使用后一步的回调。
-
-
-## 7.7 空间索引
+<a name="7-Spatial Indexing"></a>
+## 7.6 空间索引
 
 Chipmunk6正式支持2个空间索引。默认是轴对齐包围盒树，该灵感来自于Bullet物理库中使用的包围盒树，但是我将它与我自己的碰撞对缓存一起做了扩展以便为树实现非常好的时间相干性。树无需调整优化，而且在大多数游戏中会发现使用它能获得更好的性能。另外一个可用的索引是空间哈希，当你有着非常多数量且相同尺寸的物体时，它会更快。
 
@@ -1023,7 +1148,8 @@ Chipmunk6正式支持2个空间索引。默认是轴对齐包围盒树，该灵�
 -  void cpSpaceReindexShapesForBody(cpSpace *space, cpBody *body) - 重新索引指定刚体上的所有形状
 -  void cpSpaceReindexStatic(cpSpace *space) – 重新索引所有静态形状。一般只更新改变的形状会比较快
 
-## 7.8 迭代器
+<a name="7-Iterators"></a>
+## 7.7 迭代器
 
 ```
 typedef void (*cpSpaceBodyIteratorFunc)(cpBody *body, void *data)
@@ -1063,14 +1189,16 @@ void cpSpaceEachConstraint(cpSpace *space, cpSpaceConstraintIteratorFunc func, v
 
 注意：如果你的编译器支持闭包(如Clang), 那么有另外一组函数你可以调用。`cpSpaceEachBody_b()`等等。更多信息请查看`chipmunk.h`。
 
-## 7.9 空间模拟
+<a name="7-Simulating the Space"></a>
+## 7.8 空间模拟
 
 ```
 void cpSpaceStep(cpSpace *space, cpFloat dt)
 ```
 通过给定的时间步来更新空间。强烈推荐使用一个固定的时间步长。这样做能大大提高模拟的质量。实现固定的时间步，最简单的方法就是简单的每个帧频步进1/60s（或任何你的目标帧率），而无论花去了多少渲染时间。在许多游戏中这样很有效，但是将物理时间步进和渲染分离是一个更好的方式。[这是一篇介绍如何做的好文章](http://gafferongames.com/game-physics/fix-your-timestep/)。
 
-## 7.10 启用和调优空间哈希（散列）
+<a name="7-Enabling and Tuning the Spatial Hash"></a>
+## 7.9 启用和调优空间哈希（散列）
 
 如果你有成千上万个大小大致相同的物体，空间哈希可能会很适合你。
 
@@ -1101,22 +1229,26 @@ void cpSpaceUseSpatialHash(cpSpace *space, cpFloat dim, int count)
 
 Chipmunk6也有一个实验性的单轴排序和范围实现。在移动游戏中如果你的世界是很长且扁就像赛车游戏，它是非常高效。如果你想尝试启用它, 可以查阅`cpSpaceUseSpatialHash()`的代码。
 
-## 7.11 札记
+<a name="7-Notes"></a>
+## 7.10 札记
 
 -  当从空间中删除对象时，请确保你已经删除了任何引用它的其他对象。例如，当你删除一个刚体时，要先删除掉关联到刚体的关节和形状。
 -  迭代次数和时间步长的大小决定了模拟的质量。越多的迭代次数，或者更小的时间步会提高模拟的质量。请记住，更高质量的同时也意味着更高的CPU使用率。 
 -  因为静态形状只有当你需要的时候才重新哈希，所以可能会使用一个更大的`count`参数来`cpHashResizeStaticHash()`而不是`cpSpaceResizeActiveHash()`。如果你有大量静态形状的话，这样做会使用更多的内存但是会提升性能。
 
+<a name="8-Chipmunk Constraints: cpConstraint"></a>
 # 8. Chipmunk约束：cpConstraint
       
 约束是用来描述两个刚体如何相互作用的（他们是如何约束彼此的）。约束可以是允许刚体像我们身体的骨头一样轴转动的简单关节，也可以是更抽象的比如齿轮关节或马达关节。
 
+<a name="8-What constraints are and what they are not"></a>
 ## 8.1 约束是什么，不是什么
 
 在Chipmunk中，约束都是基于速度的约束。这意味着他们主要通过同步两个刚体的速度进行作用。一个轴关节将两个独立刚体的两个锚点连接起来，公式定义要求两个锚点的速度必须相同并且计算施加在刚体上的冲量以便试图保持这个状态。约束将速度视为主要的输入并且产生一个速度变化作为它的输出。一些约束（尤其是关节）通过改变速度来修正位置的差异。更多详情见下一节。
 
 连接两个刚体的弹簧不是一个约束。它很像约束因为它会创建一个力来影响两个刚体的速度，但是弹簧将距离作为输入，将力作为输出。如果弹簧不是一个约束，你会问为什么还会有两种类型的弹簧约束。原因是他们是阻尼弹簧。弹簧关联的阻尼才是真正的约束，这个约束会根据关联的两个刚体的相对速度来创建速度的变化。因为大部分情况将一个阻尼器和一个弹簧放在一起很方便，我想我还不如将弹簧力作为约束的一部分，而不是用一个阻尼器约束然后让用户单独计算和施加弹簧力。	
 
+<a name="8-Properties"></a>
 ## 8.2 属性
 
 -  得到约束关联的两个刚体
@@ -1190,6 +1322,7 @@ if(breakableJoint){
 
 要访问特定关节类型的属性，使用提供的getter和setter函数（如cpPinJointGetAnchr1()）。更多信息请查看属性列表。
 
+<a name="8-Error correction by Feedback"></a>
 ## 8.3 反馈纠错
 
 Chipmunk的关节并不完美。销关节并不能维系两个锚点之间确切的距离，枢轴关节同样也不能保持关联的锚点完全在一起。他们通过自纠错来处理这个问题。在Chipmunk5中，你有很多额外的控制来实现关节对自身的纠错，甚至可以使用这个特性，以独特的方式使用关节来创建一些物理效果。
@@ -1220,21 +1353,26 @@ gear->maxForce = 5000.0f;
 // 你可以使用游离刚体作为控制刚体来连接。可以查看`Tank`演示例子。
 ```
 
+<a name="8-Constraints and Collision Shapes"></a>
 ## 8.4 约束和碰撞形状
 
 约束和碰撞形状互不了解双方信息。当为刚体连接关节时，锚点不必处于刚体形状的内部，这么做通常是有意义的。同样的，为两个刚体添加约束并不能阻止刚体形状碰撞。事实上，这便是碰撞组属性存在的主要原因。
 
+<a name="8-Video Tour of Current Joint Types. (Requires connection to YouTube)"></a>
 ## 8.5 现有关节类型视频演示
 
 -  [Youtube地址](http://www.youtube.com/watch?v=ZgJJZTS0aMM)
 -  [优酷地址](http://v.youku.com/v_show/id_XNjgxNDIyMzky.html)
 
+<a name="8-Shared Memory Management Functions"></a>
 ## 8.6 共享内存管理函数
 
 `Destroy`和`Free`函数由所有关节类型共享。`Allocation`和`init`函数对于每种关节类型都是特定的。
 
+<a name="9-Constraint Types"></a>
 # 9. 约束类型
 
+<a name="9-Pin Joints"></a>
 ## 9.1 销关节
 
 ```
@@ -1254,6 +1392,7 @@ cpConstraint *cpPinJointNew(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2)
 -  cpFloat cpPinJointGetDist(const cpConstraint *constraint)
 -  void cpPinJointSetDist(cpConstraint *constraint, cpFloat value)
 
+<a name="9-Slide Joints"></a>
 ## 9.2 滑动关节
 
 ```
@@ -1280,6 +1419,7 @@ cpConstraint *cpSlideJointNew(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr2
 -  cpFloat cpSlideJointGetMax(const cpConstraint *constraint)
 -  void cpSlideJointSetMax(cpConstraint *constraint, cpFloat value)
 
+<a name="9-Pivot Joints"></a>
 ## 9.3 枢轴关节
 
 ```
@@ -1297,6 +1437,7 @@ cpConstraint *cpPivotJointNew2(cpBody *a, cpBody *b, cpVect anchr1, cpVect anchr
 -  cpVect cpPivotJointGetAnchr2(const cpConstraint *constraint)
 -  void cpPivotJointSetAnchr2(cpConstraint *constraint, cpVect value)
 
+<a name="9-Groove Joint"></a>
 ## 9.4 沟槽关节
 
 ```
@@ -1321,6 +1462,7 @@ cpConstraint *cpGrooveJointNew(cpBody *a, cpBody *b, cpVect groove_a, cpVect gro
 -  cpVect cpGrooveJointGetAnchr2(const cpConstraint *constraint)
 -  void cpGrooveJointSetAnchr2(cpConstraint *constraint, cpVect value)
 
+<a name="9-Damped Spring"></a>
 ## 9.5 阻尼弹簧
 
 ```
@@ -1353,6 +1495,7 @@ cpConstraint *cpDampedSpringNew(
 -  cpFloat cpDampedSpringGetDamping(const cpConstraint *constraint)
 -  void cpDampedSpringSetDamping(cpConstraint *constraint, cpFloat value)
 
+<a name="9-Damped Rotary Spring"></a>
 ## 9.6 阻尼旋转弹簧
 
 ```
@@ -1377,6 +1520,7 @@ cpConstraint *cpDampedRotarySpringNew(cpBody *a, cpBody *b, cpFloat restAngle, c
 -  cpFloat cpDampedRotarySpringGetDamping(const cpConstraint *constraint)
 -  void cpDampedRotarySpringSetDamping(cpConstraint *constraint, cpFloat value)
 
+<a name="9-Rotary Limit Joint"></a>
 ## 9.7 旋转限位关节
 
 ```
@@ -1393,6 +1537,7 @@ cpConstraint *cpRotaryLimitJointNew(cpBody *a, cpBody *b, cpFloat min, cpFloat m
 -  cpFloat cpRotaryLimitJointGetMax(const cpConstraint *constraint)
 -  void cpRotaryLimitJointSetMax(cpConstraint *constraint, cpFloat value)
 
+<a name="9-Ratchet Joint"></a>
 ## 9.8 棘轮关节
 
 ```
@@ -1411,6 +1556,7 @@ cpConstraint *cpRatchetJointNew(cpBody *a, cpBody *b, cpFloat phase, cpFloat rat
 -  cpFloat cpRatchetJointGetRatchet(const cpConstraint *constraint)
 -  void cpRatchetJointSetRatchet(cpConstraint *constraint, cpFloat value)
 
+<a name="9-Gear Joint"></a>
 ## 9.9 齿轮关节
 
 ```
@@ -1427,6 +1573,7 @@ cpConstraint *cpGearJointNew(cpBody *a, cpBody *b, cpFloat phase, cpFloat ratio)
 -  cpFloat cpGearJointGetRatio(const cpConstraint *constraint)
 -  void cpGearJointSetRatio(cpConstraint *constraint, cpFloat value)
 
+<a name="9-Simple Motor"></a>
 ## 9.10 简单马达
 
 ```
@@ -1441,40 +1588,55 @@ cpConstraint *cpSimpleMotorNew(cpBody *a, cpBody *b, cpFloat rate);
 -  cpFloat cpSimpleMotorGetRate(const cpConstraint *constraint)
 -  void cpSimpleMotorSetRate(cpConstraint *constraint, cpFloat value)
 
+<a name="9-Notes"></a>
 ## 9.11 札记
 
 -  你可以为两个刚体添加多个关节，但要确保他们彼此不会冲突。否则会引起刚体抖动或者剧烈的旋转。
 
+<a name="10-Overview of Collision Detection in Chipmunk"></a>
 # 10. Chipmunk碰撞检测概述
 
 Chipmunk为了使得碰撞检测尽可能快，将处理过程分成了若干阶段。虽然我一直试图保持它概念简单，但实现却有点让人生畏。幸运的是作为Chipmunk库的使用者，你并不需要了解一切关于它是如何工作的。但如果你在尝试发挥Chipmunk的极致，理解这一部分会有所帮助。
 
+<a name="10-Spatial Indexing"></a>
 ## 10.1 空间索引
 
 在场景中用一个for循环来检查每一个对象是否与其他对象发生碰撞会很慢。所以碰撞检测的第一步(或者就像通常称作的阶段)，就是使用高层次空间算法来找出哪些对象应该被检查碰撞。目前Chipmunk支持两种空间索引，轴对齐包围盒树和空间散列。这些空间索引能够快速识别哪些形状彼此靠近，并应做碰撞检查。
 
-## 10.2 碰撞过滤（筛选）
+<a name="10-Fast Collision Filtering"></a>
+## 10.2 快速碰撞过滤
 
 在空间索引找出彼此靠近的形状对后，将它们传给space，然后再执行一些额外的筛选。在进行任何操作前，Chipmunk会执行几个简单的测试来检测形状是否会发生碰撞。
 
 -  包围盒测试：如果形状的包围盒没有重叠，那么形状便没发生碰撞。对象如对角线线段会引发许多误报，但你不应该担心。 
--  层测试：如果形状不在同一层内则不会发生碰撞。（他们的层掩码按位与运算结果为0）
+-  类别掩码测试：每一个形状的的类别和其他形状的类别掩码进行位运算。如果结果是0，形状之间不发生碰撞。
 -  群组测试：在相同的非零群组中的形状不会发生碰撞。
 
-## 10.3 基本形状与形状间的碰撞检测
+<a name="10-Constraint Based Filtering"></a>
+## 10.3 基于约束的碰撞过滤
+
+在快速碰撞过滤之后， Chipmunk对关节列表中其中一个刚体检查，看它是否通过关节和其他刚体关联着。如果关节的`collideBodies`属性为`false`，碰撞将会被忽略掉。因为大部分场景都不会包含很多关节，所以检测过程非常迅速。
+
+<a name="10-Primitive Shape to Shape Collision Detection"></a>
+## 10.4 基本形状与形状间的碰撞检测
 
 最昂贵的测试其实就是检测基于几何形状的重叠。圆与圆，圆与线之间的碰撞检测相当快，多边形和多边形的碰撞检测随着顶点数的增加而更加昂贵。形状越简单，碰撞检测就越快（更重要的是求解器检测的碰撞点就越少）。Chipmunk使用了一个分发表来描述应该使用哪个函数来检测形状是否重叠。
 
-## 10.4 碰撞处理函数过滤
+<a name="10-Collision Handler Filtering"></a>
+## 10.5 碰撞处理函数过滤
 
 在检测到两个形状间重叠之后，Chipmunk会查看你是否为该碰撞形状的类型定义了一个碰撞处理函数。对于游戏这样去处理碰撞事件是至关重要的，同时也为你提供了一个非常灵活的方式来过滤掉碰撞。`begin()`和`preSolve()`回调函数的返回值决定了碰撞的形状对是否该舍弃掉。返回`true`会保留形状对，`false`则会舍弃。在`begin()`回调中中止一个碰撞是永久性的，在`preSolve()`回调中中止只是应用于当前所处的时间步。如果你没有为碰撞类型定义一个处理函数，Chipmunk将会调用`space`的默认处理函数，默认会简单的接受所有碰撞。
 
-使用回调过滤碰撞是最灵活的方式，记住，到那时候所有最昂贵的碰撞检测通过你的回调都已经完成。对于每帧有大量碰撞对象的模拟，寻找碰撞所消耗的时间和解决碰撞所消耗的时间相比要小很多，所以这不是一个大问题。不过，如果可以的话先使用层或者群组。
+Wildcard collisions can also return a value, but they are handled in a more complicated way. When you create a collision handler between two specific collision types, it’s your responsibility to decide when to call the wildcard handlers and what to do with their return values. Otherwise, the default is to call the wildcard handler for the first type, then the second type, and use a logical AND of their return values as filtering value. See DefaultBegin() in cpSpace.c for more information.
 
+使用回调过滤碰撞是最灵活的方式，记住，到那时候所有最昂贵的碰撞检测通过你的回调都已经完成。对于每帧有大量碰撞对象的模拟，寻找碰撞所消耗的时间和解决碰撞所消耗的时间相比要小很多，所以这不是一个大问题。不过，尽可能的选择快速碰撞过滤。
+
+<a name="11-Collision Callbacks"></a>
 # 11. 碰撞回调
 
 没有任何事件或反馈的物理库对游戏而言帮助并不大。你怎么知道当玩家碰到了一个敌人，以便你扣除一些生命点数？你怎么知道汽车撞击一个东西的力度，这样你就不会在石子击中它的时候播放一个巨响轰隆音？如果你需要决定在特定条件下的碰撞是否应该被忽略，比如要实现单向平台？Chipmunk拥有一套强大的回调系统，你可以实现他们来完成这一切。
 
+<a name="11-Collision Handlers"></a>
 ## 11.1 碰撞处理
 
 碰撞处理函数是Chipmunk能够识别的不同碰撞事件的一组4个回调函数。事件类型是：
@@ -1490,6 +1652,7 @@ Chipmunk为了使得碰撞检测尽可能快，将处理过程分成了若干阶
 
 注2：`preSolve()`回调在休眠算法运行之前被调用。如果一个对象进入休眠状态，`postSolve()`回调将不会被调用，直到它被唤醒。
 
+<a name="11-Collision Handler API"></a>
 ## 11.2 碰撞处理API
 
 ```
@@ -1530,26 +1693,31 @@ void cpSpaceSetDefaultCollisionHandler(
 ```
 当没有具体的碰撞处理时Chipmunk会使用一个默认的注册碰撞处理函数。space在创建时被指定了一个默认的处理函数，该函数在`begin()`和`preSolve()`回调中返回`true`，在`postSolve()`和`separate()`回调中不做任何事情。
 
+<a name="11-Post-Step Callbacks"></a>
 ## 11.3 后步回调
 
 后步回调允许你打破在一个回调内增加或删除对象的规则。事实上，它们的主要功能就是帮助你安全的从你想要禁用/破坏一个碰撞/查询回调的空间中移除对象。
 
 后步回调被注册为一个函数和用作键的一个指针。你只能为每个键注册一个`postStep()`回调。这可以防止你不小心多次删除对象。例如，假设你有子弹和对象A之间的碰撞回调。你想摧毁子弹和对象A，因此你注册一个`postStep()`回调来从游戏中安全地移除它们。然后，你得到子弹和对象B之间的碰撞回调，你注册一个`postStep()`回调来删除对象B，第二次`postStep()`回调来移除子弹。因为你只能为每个键注册一次回调， `postStep()`回调对于子弹而言只会被调用一次，你不可能意外删除两次。
 
+<a name="11-Examples"></a>
 ## 11.4 例子
 
 更多信息请查看[碰撞回调范例](http://chipmunk-physics.net/release/ChipmunkLatest-Docs/examples.html#CollisionCallbacks)。
 
+<a name="12-Chipmunk Collision Pairs: cpArbiter"></a>
 # 12. Chipmunk碰撞对：cpArbiter
 
 Chipmunk的`cpArbiter`结构封装了一对碰撞的形状和关于它们的所有碰撞数据。
 
 为什么称之为仲裁者？简短来说，我一直用的是“仲裁”来形容碰撞解决的方式，然后早在2006年当我在看Box2D的求解器的时候看到了Box2D居然叫它们仲裁者。仲裁者就像是一个法官，有权力来解决两个人之间的纠纷。这是有趣的，使用了合适的名字并且输入比我以前用的`CollisionPair`要短。它最初只是被设定为一个私有的内部结构，但却在回调中很有用。
 
+<a name="12-Memory Management"></a>
 ## 12.1 内存管理
 
 你永远不需要创建或释放一个仲裁者。更重要的是，因为它们完全由空间管理，所以你永远不应该存储一个仲裁者的引用，因为你不知道它们什么时候会被释放或重新使用。在回调中使用它们，然后忘记它们或复制出你需要的信息。
 
+<a name="12-Properties"></a>
 ## 12.2 属性
 
 ```
@@ -1639,6 +1807,7 @@ begin(cpArbiter *arb, cpSpace *space, void *unused)
 cpSpaceAddCollisionHandler(space, BULLET_TYPE, MONSTER_TYPE, begin, NULL, NULL, NULL, NULL);
 ```
 
+<a name="12-Contact Point Sets"></a>
 ## 12.3 触点集
 
 通过触点集我们得到接触信息变得更为容易。
@@ -1665,6 +1834,7 @@ void cpArbiterSetContactPointSet(cpArbiter *arb, cpContactPointSet *set)
 ```
 替换仲裁者的触点集。你不能改变触点的数目，但是可以改变它们的位置，法向量或穿透距离。`Sticky`演示使用它来使得物体能够获得额外量的重叠。你也可以在乒乓式风格游戏中使用它来修改基于碰撞x轴的碰撞法向量，即使板子是扁平形状。
 
+<a name="12-Helper Functions"></a>
 ## 12.4 帮助函数 
 
 ```
@@ -1690,10 +1860,12 @@ cpFloat cpArbiterTotalKE(const cpArbiter *arb);
 ```
 计算在碰撞中的能量损失值，包括静摩擦不包括动摩擦。这个函数应该在`postSolve()`, `postStep()`或者`cpBodyEachArbiter()`回调中被调用。
 
+<a name="13-Queries"></a>
 # 13. 查询
 
-Chipmunk空间支持4种空间查询，包括最近点查询、线段查询、形状查询和快速包围盒查询。任何一种类型都可在空间里有效运行，并且点和线段查询可以针对单个形状来进行。所有类型的查询需要一个碰撞组和层，并使用和过滤形状间碰撞一样的规则来过滤出匹配。如果你不希望过滤掉任何匹配，使用`CP_ALL_LAYERS`作为层，`CP_NO_GROUP`作为组。
+Chipmunk空间支持4种空间查询，包括最近点查询、线段查询、形状查询和快速包围盒查询。任何一种类型都可在空间里有效运行，并且点和线段查询可以针对单个形状来进行。所有类型的查询需要一个碰撞组和层，并使用和过滤形状间碰撞一样的规则来过滤出匹配。查看 [cpShape](#7-Chipmunk Spaces: cpSpace) 来获得更多信息。如果你不希望过滤掉任何匹配，使用`CP_ALL_LAYERS`作为层，`CP_NO_GROUP`作为组。
 
+<a name="13-Nearest Point Queries"></a>
 ## 13.1 最近点查询
 
 点查询对于像鼠标拾取和简单的感应器来说非常有用。它允许你检查离给定点一定距离内是否存在着形状，找到形状上离给定点最近的点或者找到离给定点最近的形状。
@@ -1712,19 +1884,21 @@ typedef struct cpNearestPointQueryInfo {
 } cpNearestPointQueryInfo;
 ```
 
-
+<a name="13-Segment Queries"></a>
 ## 13.2 线段查询
 
 线段查询就像射线投射一样，但由于并非所有的空间索引都允许处理无限长的射线查询所以它仅限于线段。在实践中这仍然非常快速，你不用过多的担心过长的线段查询会影响到性能。
 
 ```
 typedef struct cpSegmentQueryInfo {
-	//碰撞的形状，如果没有碰撞发生则为NULL
-	cpShape *shape;
-	// 线段查询的归一化距离，在[0,1]范围内
-	cpFloat t;
-	// 表面命中点的法向量
-	cpVect n;
+    //碰撞的形状，如果没有碰撞发生则为NULL
+    const cpShape *shape;
+    /// 碰撞点
+    cpVect point;
+    // 表面命中点的法向量
+    cpVect normal;
+    // 线段查询的归一化距离，在[0,1]范围内
+    cpFloat alpha;
 } cpSegmentQueryInfo;
 
 ```
@@ -1740,22 +1914,22 @@ cpBool cpShapeSegmentQuery(cpShape *shape, cpVect a, cpVect b, cpSegmentQueryInf
 typedef void (*cpSpaceSegmentQueryFunc)(cpShape *shape, cpFloat t, cpVect n, void *data)
 
 void cpSpaceSegmentQuery(
-	cpSpace *space, cpVect start, cpVect end,
-	cpLayers layers, cpGroup group,
-	cpSpaceSegmentQueryFunc func, void *data
+    cpSpace *space, cpVect start, cpVect end, cpFloat radius,
+    cpShapeFilter filter,
+    cpSpaceSegmentQueryFunc func, void *data
 )
 ```
 
-沿着线段的`start`到`end`使用给定的`layers`和`groups`来查询`space`过滤筛选出匹配。`func`函数被调用，附带着线段和任何被发现的形状表面的法向量之间的归一化距离，还有传递给`cpSpacePointQuery()`的data参数。传感器类形状也被包括在内。
+沿着线段的`start`到`end`使用给定的`radius `来查询`space`过滤筛选出匹配。`func`函数被调用，附带着线段和任何被发现的形状表面的法向量之间的归一化距离，还有传递给`cpSpacePointQuery()`的data参数。传感器类形状也被包括在内。
 
 ```
 cpShape *cpSpaceSegmentQueryFirst(
-	cpSpace *space, cpVect start, cpVect end,
-	cpLayers layers, cpGroup group,
-	cpSegmentQueryInfo *info
+    cpSpace *space, cpVect start, cpVect end, cpFloat radius,
+    cpShapeFilter filter,
+    cpSegmentQueryInfo *info
 )
 ```
-沿着线段的`start`到`end`使用给定的`layers`和`groups`来查询`space`过滤筛选出匹配。只有遇到的第一个形状会被返回并结束搜索，如果没有发现形状则返回`NULL`。`info`指向的结构体将会被光线投射信息初始化，除非`info`是`NULL`。传感器类形状将被忽略。
+沿着线段的`start`到`end`使用给定的`radius `来查询`space`过滤筛选出匹配。只有遇到的第一个形状会被返回并结束搜索，如果没有发现形状则返回`NULL`。`info`指向的结构体将会被光线投射信息初始化，除非`info`是`NULL`。传感器类形状将被忽略。
 
 ### 线段查询辅助函数：
 
@@ -1769,6 +1943,7 @@ cpFloat cpSegmentQueryHitDist(cpVect start, cpVect end, cpSegmentQueryInfo info)
 ```
 返回线段与形状第一个相交点的绝对距离。
 
+<a name="13-AABB Queries"></a>
 ## 13.3 AABB查询
 
 AABB查询提供一个快速的方式来粗略检测一个范围内存在的形状。
@@ -1777,14 +1952,15 @@ AABB查询提供一个快速的方式来粗略检测一个范围内存在的形�
 typedef void (*cpSpaceBBQueryFunc)(cpShape *shape, void *data)
 
 void cpSpaceBBQuery(
-	cpSpace *space, cpBB bb,
-	cpLayers layers, cpGroup group,
-	cpSpaceBBQueryFunc func, void *data
+    cpSpace *space, cpBB bb,
+    cpShapeFilter filter,
+    cpSpaceBBQueryFunc func, void *data
 )
 ```
 
-查询`space`找到`bb`附近并筛选出符合给定层和组的所有形状。每个包围盒和`bb`有重叠的形状，都会调用`func`, 并将`data`参数传给`cpSpaceBBQuery()`。传感器类形状也包括在内。
+查询`space`找到`bb`附近所有的形状。过滤被应用到了查询上并且和碰撞检测遵循同样的规则。每个包围盒和`bb`有重叠的形状，都会调用`func`, 并将`data`参数传给`cpSpaceBBQuery()`。传感器类形状也包括在内。
 
+<a name="13-Shape Queries"></a>
 ## 13.4 形状查询
 
 形状查询允许你检测空间中的形状是否和一个指定的区域发生了重叠。如果你想在该位置添加另外一个形状，又或者在AI中使用它进行感应查询的话。你可以通过形状查询来检测物体是否已经存在于一个位置上。
@@ -1799,10 +1975,12 @@ cpBool cpSpaceShapeQuery(cpSpace *space, cpShape *shape, cpSpaceShapeQueryFunc f
 
 查询`space`来找到和`shape`重叠的所有形状。使用`shape`的层和群组来过滤筛选得到匹配。`func`函数由每个重叠的形状调用，附带一个临时的`cpContactPointSet`的一个指针和传递给`cpSpaceBBQuery()`的`data`参数。传感器类形状也包括在内。
 
+<a name="13-Blocks"></a>
 ## 13.5 闭包
 
 如果你的编译器支持闭包(如Clang), 还有另外一组函数可以调用，如`cpSpaceNearestPointQuery_b()`等。详情请参考`chipmunk.h`。
 
+<a name="13-Examples"></a>
 ## 13.6 例子
 
-更多信息见[查询例子](http://chipmunk-physics.net/release/ChipmunkLatest-Docs/examples.html#Query)
+更多信息见[查询例子](https://chipmunk-physics.net/release/ChipmunkLatest-Docs/examples.html#Query)
